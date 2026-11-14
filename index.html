@@ -43,13 +43,13 @@
                 </div>
             </div>
             <div class="flex items-center gap-2 flex-wrap">
-                <button id="notif-btn" onclick="toggleNotification()" class="px-3 py-1.5 rounded-full text-xs font-medium bg-morandi-light text-morandi-text hover:bg-morandi-primary hover:text-white transition">
+                <button id="notif-btn" onclick="toggleNotification()" class="px-3 py-1.5 rounded-full text-xs font-medium bg-morandi-light text-morandi-text hover:bg-morandi-primary hover:text-white transition cursor-pointer">
                     🔔 開啟桌面通知
                 </button>
-                <button id="sound-toggle-btn" onclick="toggleSound()" class="px-3 py-1.5 rounded-full text-xs font-medium bg-morandi-primary/20 text-morandi-primary">
+                <button id="sound-toggle-btn" onclick="toggleSound()" class="px-3 py-1.5 rounded-full text-xs font-medium bg-morandi-primary/20 text-morandi-primary cursor-pointer">
                     🔊 音效開啟
                 </button>
-                <button onclick="testSound()" class="px-3 py-1.5 rounded-full text-xs font-medium bg-morandi-secondary/20 text-morandi-secondary hover:bg-morandi-secondary hover:text-white transition">
+                <button onclick="testSound()" class="px-3 py-1.5 rounded-full text-xs font-medium bg-morandi-secondary/20 text-morandi-secondary hover:bg-morandi-secondary hover:text-white transition cursor-pointer">
                     試聽鈴聲
                 </button>
             </div>
@@ -90,10 +90,10 @@
                     <div class="mb-6">
                         <p class="text-xs text-morandi-muted mb-2">快速記錄一杯水：</p>
                         <div class="grid grid-cols-4 gap-2">
-                            <button onclick="addWater(150)" class="py-2 bg-white hover:bg-morandi-primary hover:text-white border border-morandi-light rounded-lg text-xs font-semibold text-morandi-text transition shadow-sm">+150 cc</button>
-                            <button onclick="addWater(250)" class="py-2 bg-white hover:bg-morandi-primary hover:text-white border border-morandi-light rounded-lg text-xs font-semibold text-morandi-text transition shadow-sm">+250 cc</button>
-                            <button onclick="addWater(300)" class="py-2 bg-white hover:bg-morandi-primary hover:text-white border border-morandi-light rounded-lg text-xs font-semibold text-morandi-text transition shadow-sm">+300 cc</button>
-                            <button onclick="addWater(500)" class="py-2 bg-white hover:bg-morandi-primary hover:text-white border border-morandi-light rounded-lg text-xs font-semibold text-morandi-text transition shadow-sm">+500 cc</button>
+                            <button onclick="addWater(150)" class="py-2 bg-white hover:bg-morandi-primary hover:text-white border border-morandi-light rounded-lg text-xs font-semibold text-morandi-text transition shadow-sm cursor-pointer">+150 cc</button>
+                            <button onclick="addWater(250)" class="py-2 bg-white hover:bg-morandi-primary hover:text-white border border-morandi-light rounded-lg text-xs font-semibold text-morandi-text transition shadow-sm cursor-pointer">+250 cc</button>
+                            <button onclick="addWater(300)" class="py-2 bg-white hover:bg-morandi-primary hover:text-white border border-morandi-light rounded-lg text-xs font-semibold text-morandi-text transition shadow-sm cursor-pointer">+300 cc</button>
+                            <button onclick="addWater(500)" class="py-2 bg-white hover:bg-morandi-primary hover:text-white border border-morandi-light rounded-lg text-xs font-semibold text-morandi-text transition shadow-sm cursor-pointer">+500 cc</button>
                         </div>
                     </div>
                 </div>
@@ -102,7 +102,7 @@
                 <div class="bg-white p-4 rounded-xl border border-morandi-light">
                     <div class="flex justify-between items-center mb-2">
                         <span class="text-xs text-morandi-muted">喝水提醒間隔：每</span>
-                        <select id="water-interval" onchange="changeWaterInterval()" class="text-xs bg-morandi-bg border border-morandi-light rounded px-2 py-1 text-morandi-text focus:outline-none">
+                        <select id="water-interval" onchange="changeWaterInterval()" class="text-xs bg-morandi-bg border border-morandi-light rounded px-2 py-1 text-morandi-text focus:outline-none cursor-pointer">
                             <option value="10">10 秒測試</option>
                             <option value="30">30 分鐘</option>
                             <option value="45" selected>45 分鐘</option>
@@ -113,8 +113,8 @@
                     <div class="flex items-center justify-between">
                         <span id="water-timer-display" class="text-2xl font-mono font-bold text-morandi-primary">45:00</span>
                         <div class="flex gap-2">
-                            <button id="water-start-btn" onclick="toggleWaterTimer()" class="px-4 py-1.5 bg-morandi-primary text-white text-xs font-medium rounded-lg hover:bg-morandi-primary-dark transition shadow-sm">開始計時</button>
-                            <button onclick="resetWaterTimer()" class="p-1.5 bg-morandi-bg border border-morandi-light rounded-lg text-morandi-muted hover:text-morandi-text transition">🔄</button>
+                            <button id="water-start-btn" onclick="toggleWaterTimer()" class="px-4 py-1.5 bg-morandi-primary text-white text-xs font-medium rounded-lg hover:bg-morandi-primary-dark transition shadow-sm cursor-pointer">開始計時</button>
+                            <button onclick="resetWaterTimer()" class="p-1.5 bg-morandi-bg border border-morandi-light rounded-lg text-morandi-muted hover:text-morandi-text transition cursor-pointer">🔄</button>
                         </div>
                     </div>
                 </div>
@@ -133,8 +133,8 @@
                     <div class="text-center bg-white rounded-xl p-6 border border-morandi-light mb-6 shadow-sm">
                         <div class="flex justify-center items-center gap-2 mb-2">
                             <span class="text-xs text-morandi-muted">專用眼間隔：每</span>
-                            <select id="eye-interval" onchange="changeEyeInterval()" class="text-xs bg-morandi-bg border border-morandi-light rounded px-2 py-1 text-morandi-text focus:outline-none">
-                                <option value="0.16">10 秒測試</option>
+                            <select id="eye-interval" onchange="changeEyeInterval()" class="text-xs bg-morandi-bg border border-morandi-light rounded px-2 py-1 text-morandi-text focus:outline-none cursor-pointer">
+                                <option value="0.1667">10 秒測試</option>
                                 <option value="20" selected>20 分鐘</option>
                                 <option value="30">30 分鐘</option>
                             </select>
@@ -150,8 +150,8 @@
 
                 <!-- 護眼控制按鈕 -->
                 <div class="space-y-2">
-                    <button id="eye-start-btn" onclick="toggleEyeTimer()" class="w-full py-2.5 bg-morandi-accent text-white font-medium rounded-xl hover:bg-opacity-90 transition shadow-sm text-sm">開始護眼計時</button>
-                    <button onclick="triggerRestModal()" class="w-full py-2 bg-white border border-morandi-light text-morandi-text text-xs rounded-xl hover:bg-morandi-light transition">眼睛酸了？立即啟動 20 秒望遠休息模式</button>
+                    <button id="eye-start-btn" onclick="toggleEyeTimer()" class="w-full py-2.5 bg-morandi-accent text-white font-medium rounded-xl hover:bg-opacity-90 transition shadow-sm text-sm cursor-pointer">開始護眼計時</button>
+                    <button onclick="triggerRestModal()" class="w-full py-2 bg-white border border-morandi-light text-morandi-text text-xs rounded-xl hover:bg-morandi-light transition cursor-pointer">眼睛酸了？立即啟動 20 秒望遠休息模式</button>
                 </div>
             </div>
 
@@ -159,34 +159,34 @@
 
         <div class="mt-6 pt-4 border-t border-morandi-light flex justify-between items-center text-xs text-morandi-muted">
             <span>✨ 資料會自動儲存於瀏覽器，每日午夜自動歸零重新計算。</span>
-            <button onclick="resetAllData()" class="hover:text-morandi-text underline">手動重置今日數據</button>
+            <button onclick="resetAllData()" class="hover:text-morandi-text underline cursor-pointer">手動重置今日數據</button>
         </div>
     </div>
 
-    <!-- 🔔 持续响铃警报弹窗（覆盖全场直到手动关闭） -->
-    <div id="alarm-modal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center hidden">
-        <div class="bg-white rounded-2xl p-8 max-w-md w-full text-center shadow-2xl border-4 border-morandi-secondary animate-bounce">
+    <!-- 🔔 持續響鈴警報彈窗（預設徹底隱藏） -->
+    <div id="alarm-modal" style="display: none;" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 items-center justify-center p-4">
+        <div class="bg-white rounded-2xl p-8 max-w-md w-full text-center shadow-2xl border-4 border-morandi-secondary">
             <div id="alarm-icon" class="text-5xl mb-4">💧</div>
             <h3 id="alarm-title" class="text-2xl font-bold text-morandi-text mb-2">該喝水囉！</h3>
             <p id="alarm-desc" class="text-morandi-muted mb-6 text-sm">補充 250cc 溫開水，讓思緒更清晰，順便伸展一下身體～</p>
-            <button onclick="dismissAlarm()" class="w-full py-3 bg-morandi-primary text-white font-bold rounded-xl hover:bg-morandi-primary-dark transition text-lg shadow-lg">
+            <button onclick="dismissAlarm()" class="w-full py-3 bg-morandi-primary text-white font-bold rounded-xl hover:bg-morandi-primary-dark transition text-lg shadow-lg cursor-pointer">
                 我知道了，關閉提醒 🔕
             </button>
         </div>
     </div>
 
-    <!-- 👀 20秒護眼休息全螢幕遮罩 -->
-    <div id="rest-modal" class="fixed inset-0 bg-morandi-text/90 backdrop-blur-md z-50 flex flex-col items-center justify-center text-white hidden">
+    <!-- 👀 20秒護眼休息全螢幕遮罩（預設徹底隱藏） -->
+    <div id="rest-modal" style="display: none;" class="fixed inset-0 bg-morandi-text/90 backdrop-blur-md z-50 flex-col items-center justify-center text-white p-4">
         <div class="text-6xl mb-4 animate-pulse">👀</div>
         <h2 class="text-3xl font-bold mb-2">護眼 20-20-20 休息時間</h2>
         <p class="text-morandi-light text-sm mb-8">請放鬆肩頸，望向 6 公尺外的遠方，用力眨眼...</p>
         <div id="rest-countdown" class="text-7xl font-mono font-bold text-morandi-secondary mb-8">20</div>
-        <button onclick="closeRestModal()" class="px-6 py-2 bg-white/20 hover:bg-white/30 rounded-full text-sm font-medium transition">提前結束休息</button>
+        <button onclick="closeRestModal()" class="px-6 py-2 bg-white/20 hover:bg-white/30 rounded-full text-sm font-medium transition cursor-pointer">提前結束休息</button>
     </div>
 
     <script>
         // -------------------------------------------------------------
-        // Web Worker 背景精準計時核心 (解決 Chrome 背景分頁降速問題)
+        // Web Worker 背景精準計時核心
         // -------------------------------------------------------------
         const workerCode = `
             let timers = { water: null, eye: null };
@@ -222,7 +222,7 @@
                 if (waterRemaining <= 0 && isWaterRunning) {
                     isWaterRunning = false;
                     document.getElementById('water-start-btn').textContent = "開始計時";
-                    document.getElementById('water-start-btn').className = "px-4 py-1.5 bg-morandi-primary text-white text-xs font-medium rounded-lg hover:bg-morandi-primary-dark transition shadow-sm";
+                    document.getElementById('water-start-btn').className = "px-4 py-1.5 bg-morandi-primary text-white text-xs font-medium rounded-lg hover:bg-morandi-primary-dark transition shadow-sm cursor-pointer";
                     triggerAlarm('water', '💧 該喝水囉！', '補充水分保持好精神，起來喝杯水吧！');
                 }
             } else if (type === 'eye') {
@@ -231,10 +231,9 @@
                 if (eyeRemaining <= 0 && isEyeRunning) {
                     isEyeRunning = false;
                     document.getElementById('eye-start-btn').textContent = "開始護眼計時";
-                    document.getElementById('eye-start-btn').className = "w-full py-2.5 bg-morandi-accent text-white font-medium rounded-xl hover:bg-opacity-90 transition shadow-sm text-sm";
+                    document.getElementById('eye-start-btn').className = "w-full py-2.5 bg-morandi-accent text-white font-medium rounded-xl hover:bg-opacity-90 transition shadow-sm text-sm cursor-pointer";
                     incrementEyeCount();
                     triggerAlarm('eye', '👀 眼睛該休息囉！', '每用眼 20 分鐘，請眺望遠方 20 秒並用力眨眼！');
-                    triggerRestModal();
                 }
             }
         };
@@ -263,22 +262,22 @@
         let isEyeRunning = false;
         let eyeRemaining = 20 * 60;
         let restInterval = null;
-        let alarmInterval = null; // 持續響鈴計時器
+        let alarmInterval = null;
+        let pendingRestModal = false;
 
-        // 初始化介面
         document.getElementById('water-goal-input').value = appData.waterGoal;
         document.getElementById('target-water-display').textContent = appData.waterGoal;
         updateWaterUI();
         updateEyeCountUI();
 
         // -------------------------------------------------------------
-        // 音效系統 (Web Audio API 產生清脆風鈴聲)
+        // 音效系統
         // -------------------------------------------------------------
         function playChime() {
             if (!soundEnabled) return;
             try {
                 const ctx = new (window.AudioContext || window.webkitAudioContext)();
-                const notes = [523.25, 659.25, 783.99, 1046.50]; // C5, E5, G5, C6
+                const notes = [523.25, 659.25, 783.99, 1046.50];
                 notes.forEach((freq, idx) => {
                     const osc = ctx.createOscillator();
                     const gain = ctx.createGain();
@@ -299,7 +298,7 @@
             soundEnabled = !soundEnabled;
             const btn = document.getElementById('sound-toggle-btn');
             btn.textContent = soundEnabled ? "🔊 音效開啟" : "🔇 音效關閉";
-            btn.className = soundEnabled ? "px-3 py-1.5 rounded-full text-xs font-medium bg-morandi-primary/20 text-morandi-primary" : "px-3 py-1.5 rounded-full text-xs font-medium bg-morandi-light text-morandi-muted";
+            btn.className = soundEnabled ? "px-3 py-1.5 rounded-full text-xs font-medium bg-morandi-primary/20 text-morandi-primary cursor-pointer" : "px-3 py-1.5 rounded-full text-xs font-medium bg-morandi-light text-morandi-muted cursor-pointer";
         }
 
         // -------------------------------------------------------------
@@ -309,14 +308,13 @@
             document.getElementById('alarm-icon').textContent = type === 'water' ? '💧' : '👀';
             document.getElementById('alarm-title').textContent = title;
             document.getElementById('alarm-desc').textContent = desc;
-            document.getElementById('alarm-modal').classList.remove('hidden');
+            document.getElementById('alarm-modal').style.display = 'flex';
+            pendingRestModal = (type === 'eye');
 
-            // 桌面通知
             if (Notification.permission === 'granted') {
-                new Notification(title, { body: desc, icon: 'https://cdn-icons-png.flaticon.com/512/2921/2921822.png' });
+                new Notification(title, { body: desc });
             }
 
-            // 立即響一次，並啟動持續響鈴（每 3 秒一次，直到手動關閉）
             playChime();
             if (alarmInterval) clearInterval(alarmInterval);
             alarmInterval = setInterval(() => {
@@ -325,10 +323,14 @@
         }
 
         function dismissAlarm() {
-            document.getElementById('alarm-modal').classList.add('hidden');
+            document.getElementById('alarm-modal').style.display = 'none';
             if (alarmInterval) {
                 clearInterval(alarmInterval);
                 alarmInterval = null;
+            }
+            if (pendingRestModal) {
+                pendingRestModal = false;
+                triggerRestModal();
             }
         }
 
@@ -344,11 +346,11 @@
                 const btn = document.getElementById('notif-btn');
                 if (permission === "granted") {
                     btn.textContent = "✅ 桌面通知已啟用";
-                    btn.className = "px-3 py-1.5 rounded-full text-xs font-medium bg-green-100 text-green-700";
+                    btn.className = "px-3 py-1.5 rounded-full text-xs font-medium bg-green-100 text-green-700 cursor-pointer";
                     new Notification("生活小幫手", { body: "桌面通知設定成功！時間到時會準時提醒您。" });
                 } else {
                     btn.textContent = "❌ 通知已被封鎖";
-                    btn.className = "px-3 py-1.5 rounded-full text-xs font-medium bg-red-100 text-red-700";
+                    btn.className = "px-3 py-1.5 rounded-full text-xs font-medium bg-red-100 text-red-700 cursor-pointer";
                 }
             });
         }
@@ -356,7 +358,7 @@
         if ("Notification" in window && Notification.permission === "granted") {
             const btn = document.getElementById('notif-btn');
             btn.textContent = "✅ 桌面通知已啟用";
-            btn.className = "px-3 py-1.5 rounded-full text-xs font-medium bg-green-100 text-green-700";
+            btn.className = "px-3 py-1.5 rounded-full text-xs font-medium bg-green-100 text-green-700 cursor-pointer";
         }
 
         // -------------------------------------------------------------
@@ -394,8 +396,8 @@
         }
 
         function changeWaterInterval() {
-            const mins = parseFloat(document.getElementById('water-interval').value);
-            waterRemaining = mins * 60;
+            const val = parseFloat(document.getElementById('water-interval').value);
+            waterRemaining = (val === 10) ? 10 : val * 60;
             if (isWaterRunning) {
                 timerWorker.postMessage({ action: 'start', type: 'water', duration: waterRemaining });
             }
@@ -407,23 +409,23 @@
             const btn = document.getElementById('water-start-btn');
             if (isWaterRunning) {
                 btn.textContent = "暫停計時";
-                btn.className = "px-4 py-1.5 bg-morandi-secondary text-white text-xs font-medium rounded-lg hover:bg-opacity-90 transition shadow-sm";
+                btn.className = "px-4 py-1.5 bg-morandi-secondary text-white text-xs font-medium rounded-lg hover:bg-opacity-90 transition shadow-sm cursor-pointer";
                 timerWorker.postMessage({ action: 'start', type: 'water', duration: waterRemaining });
             } else {
                 btn.textContent = "繼續計時";
-                btn.className = "px-4 py-1.5 bg-morandi-primary text-white text-xs font-medium rounded-lg hover:bg-morandi-primary-dark transition shadow-sm";
+                btn.className = "px-4 py-1.5 bg-morandi-primary text-white text-xs font-medium rounded-lg hover:bg-morandi-primary-dark transition shadow-sm cursor-pointer";
                 timerWorker.postMessage({ action: 'stop', type: 'water' });
             }
         }
 
         function resetWaterTimer() {
             isWaterRunning = false;
-            const mins = parseFloat(document.getElementById('water-interval').value);
-            waterRemaining = mins * 60;
+            const val = parseFloat(document.getElementById('water-interval').value);
+            waterRemaining = (val === 10) ? 10 : val * 60;
             timerWorker.postMessage({ action: 'stop', type: 'water' });
             const btn = document.getElementById('water-start-btn');
             btn.textContent = "開始計時";
-            btn.className = "px-4 py-1.5 bg-morandi-primary text-white text-xs font-medium rounded-lg hover:bg-morandi-primary-dark transition shadow-sm";
+            btn.className = "px-4 py-1.5 bg-morandi-primary text-white text-xs font-medium rounded-lg hover:bg-morandi-primary-dark transition shadow-sm cursor-pointer";
             updateWaterDisplay();
         }
 
@@ -437,8 +439,8 @@
         // 護眼功能邏輯
         // -------------------------------------------------------------
         function changeEyeInterval() {
-            const mins = parseFloat(document.getElementById('eye-interval').value);
-            eyeRemaining = mins * 60;
+            const val = parseFloat(document.getElementById('eye-interval').value);
+            eyeRemaining = Math.round(val * 60);
             if (isEyeRunning) {
                 timerWorker.postMessage({ action: 'start', type: 'eye', duration: eyeRemaining });
             }
@@ -450,11 +452,11 @@
             const btn = document.getElementById('eye-start-btn');
             if (isEyeRunning) {
                 btn.textContent = "暫停護眼計時";
-                btn.className = "w-full py-2.5 bg-morandi-secondary text-white font-medium rounded-xl hover:bg-opacity-90 transition shadow-sm text-sm";
+                btn.className = "w-full py-2.5 bg-morandi-secondary text-white font-medium rounded-xl hover:bg-opacity-90 transition shadow-sm text-sm cursor-pointer";
                 timerWorker.postMessage({ action: 'start', type: 'eye', duration: eyeRemaining });
             } else {
                 btn.textContent = "繼續護眼計時";
-                btn.className = "w-full py-2.5 bg-morandi-accent text-white font-medium rounded-xl hover:bg-opacity-90 transition shadow-sm text-sm";
+                btn.className = "w-full py-2.5 bg-morandi-accent text-white font-medium rounded-xl hover:bg-opacity-90 transition shadow-sm text-sm cursor-pointer";
                 timerWorker.postMessage({ action: 'stop', type: 'eye' });
             }
         }
@@ -463,7 +465,7 @@
             const mins = Math.floor(eyeRemaining / 60);
             const secs = eyeRemaining % 60;
             document.getElementById('eye-timer-display').textContent = `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
-            const total = parseFloat(document.getElementById('eye-interval').value) * 60;
+            const total = Math.round(parseFloat(document.getElementById('eye-interval').value) * 60);
             const percent = Math.max(0, Math.min(100, (eyeRemaining / total) * 100));
             document.getElementById('eye-progress').style.width = percent + '%';
         }
@@ -482,7 +484,7 @@
         // 20秒護眼休息遮罩
         // -------------------------------------------------------------
         function triggerRestModal() {
-            document.getElementById('rest-modal').classList.remove('hidden');
+            document.getElementById('rest-modal').style.display = 'flex';
             let restSecs = 20;
             document.getElementById('rest-countdown').textContent = restSecs;
             if (restInterval) clearInterval(restInterval);
@@ -497,4 +499,19 @@
         }
 
         function closeRestModal() {
-            document.
+            document.getElementById('rest-modal').style.display = 'none';
+            if (restInterval) clearInterval(restInterval);
+        }
+
+        function resetAllData() {
+            if (confirm("確定要重置今天的飲水與護眼次數嗎？")) {
+                appData.waterCurrent = 0;
+                appData.eyeCount = 0;
+                saveData();
+                updateWaterUI();
+                updateEyeCountUI();
+            }
+        }
+    </script>
+</body>
+</html>
