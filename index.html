@@ -3,32 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>生活小幫手：喝水與護眼提醒器</title>
-    <!-- 引入 Tailwind CSS -->
+    <title>生活小幫手：喝水與護眼 20-20-20 溫柔提醒器</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- 引入 Google Fonts: Noto Sans TC 與 Inter -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
     <script>
         tailwind.config = {
             theme: {
                 extend: {
-                    fontFamily: {
-                        sans: ['Inter', 'Noto Sans TC', 'sans-serif'],
-                    },
                     colors: {
                         morandi: {
-                            bg: '#F4F1EA',        // 暖米白底色
-                            card: '#FAF8F5',      // 卡片柔白
-                            border: '#E5DFD3',    // 柔和邊框
-                            green: '#7B9E89',     // 莫蘭迪湖水綠 (主色)
-                            greenDark: '#638470', // 湖水綠深色
-                            greenLight: '#E3ECE6',// 湖水綠淺底
-                            blue: '#7C93A6',      // 霧霾板岩藍 (護眼主色)
-                            blueDark: '#62788B',  // 板岩藍深色
-                            blueLight: '#E3E9EE', // 板岩藍淺底
-                            text: '#4A4E4D',      // 深灰炭色文字
-                            muted: '#8A8D8B',     // 次要輔助文字
-                            accent: '#C99E8C'     // 莫蘭迪陶土粉 (警示/強調)
+                            bg: '#F7F4F0',
+                            card: '#FFFFFF',
+                            primary: '#6B8E83',
+                            'primary-dark': '#557268',
+                            secondary: '#D0A98F',
+                            accent: '#8C9DAE',
+                            text: '#4A4A4A',
+                            light: '#EAE6E1',
+                            muted: '#9E9E9E'
                         }
                     }
                 }
@@ -36,832 +27,474 @@
         }
     </script>
     <style>
-        /* 自訂水波與動畫效果 */
-        body {
-            background-color: #F4F1EA;
-            color: #4A4E4D;
-            -webkit-font-smoothing: antialiased;
-        }
-
-        .water-fill {
-            transition: height 0.7s cubic-bezier(0.34, 1.56, 0.64, 1);
-        }
-
-        /* 隱藏數字輸入框上下箭頭 */
-        input[type="number"]::-webkit-inner-spin-button,
-        input[type="number"]::-webkit-outer-spin-button {
-            -webkit-appearance: none;
-            margin: 0;
-        }
-        input[type="number"] {
-            -moz-appearance: textfield;
-        }
-
-        /* 呼吸光圈動畫 (護眼20秒引導用) */
-        @keyframes breathe {
-            0%, 100% { transform: scale(1); opacity: 0.7; }
-            50% { transform: scale(1.15); opacity: 1; }
-        }
-        .animate-breathe {
-            animation: breathe 4s ease-in-out infinite;
-        }
+        body { background-color: #F7F4F0; color: #4A4A4A; font-family: system-ui, -apple-system, sans-serif; }
     </style>
 </head>
-<body class="min-h-screen flex flex-col justify-between p-4 sm:p-6 selection:bg-morandi-greenLight">
+<body class="min-h-screen p-4 md:p-8 flex flex-col items-center justify-center">
 
-    <!-- 主容器：限制最大寬度，確保在電腦角落小視窗也能完美呈現 -->
-    <div class="max-w-4xl w-full mx-auto space-y-5">
-
-        <!-- 頂部標題與系統控制列 -->
-        <header class="bg-morandi-card border border-morandi-border rounded-2xl p-4 sm:px-6 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+    <div class="w-full max-w-4xl bg-morandi-card rounded-2xl shadow-sm border border-morandi-light p-6 md:p-8 mb-4">
+        <!-- 頂部標題與狀態 -->
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center border-b border-morandi-light pb-4 mb-6 gap-4">
             <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-xl bg-morandi-greenLight text-morandi-greenDark flex items-center justify-center shrink-0">
-                    <!-- 葉子與水滴圖示 -->
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 21a9 9 0 0 0 9-9c0-4.97-9-11-9-11S3 7.03 3 12a9 9 0 0 0 9 9z"/>
-                    </svg>
-                </div>
+                <div class="w-10 h-10 rounded-full bg-morandi-primary/10 flex items-center justify-center text-morandi-primary font-bold text-xl">💧</div>
                 <div>
-                    <h1 class="text-lg sm:text-xl font-bold tracking-tight text-morandi-text">生活小幫手</h1>
+                    <h1 class="text-2xl font-bold text-morandi-text">生活小幫手</h1>
                     <p class="text-xs text-morandi-muted">喝水與護眼 20-20-20 溫柔提醒器</p>
                 </div>
             </div>
-
-            <!-- 通知與音效控制按鈕組 -->
-            <div class="flex flex-wrap items-center gap-2">
-                <!-- 瀏覽器通知狀態按鈕 -->
-                <button id="btn-notify" onclick="requestNotificationPermission()" 
-                    class="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-medium border border-morandi-border bg-white hover:bg-morandi-bg transition-colors cursor-pointer">
-                    <span id="notify-dot" class="w-2 h-2 rounded-full bg-amber-400"></span>
-                    <span id="notify-text">開啟桌面通知</span>
+            <div class="flex items-center gap-2 flex-wrap">
+                <button id="notif-btn" onclick="toggleNotification()" class="px-3 py-1.5 rounded-full text-xs font-medium bg-morandi-light text-morandi-text hover:bg-morandi-primary hover:text-white transition">
+                    🔔 開啟桌面通知
                 </button>
-
-                <!-- 音效開關 -->
-                <button id="btn-sound" onclick="toggleSound()" 
-                    class="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-medium border border-morandi-border bg-white hover:bg-morandi-bg transition-colors cursor-pointer"
-                    title="切換提示音效">
-                    <svg id="icon-sound-on" class="w-4 h-4 text-morandi-greenDark" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"/>
-                    </svg>
-                    <svg id="icon-sound-off" class="w-4 h-4 text-morandi-muted hidden" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15zM17 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2"/>
-                    </svg>
-                    <span id="sound-text">音效開啟</span>
+                <button id="sound-toggle-btn" onclick="toggleSound()" class="px-3 py-1.5 rounded-full text-xs font-medium bg-morandi-primary/20 text-morandi-primary">
+                    🔊 音效開啟
                 </button>
-
-                <!-- 測試音效按鈕 -->
-                <button onclick="playChime('test')" 
-                    class="px-3 py-2 rounded-xl text-xs font-medium bg-morandi-greenLight text-morandi-greenDark hover:bg-morandi-green hover:text-white transition-colors cursor-pointer">
+                <button onclick="testSound()" class="px-3 py-1.5 rounded-full text-xs font-medium bg-morandi-secondary/20 text-morandi-secondary hover:bg-morandi-secondary hover:text-white transition">
                     試聽鈴聲
                 </button>
             </div>
-        </header>
+        </div>
 
-        <!-- 雙核心模組網格：喝水模組 + 護眼模組 -->
-        <main class="grid grid-cols-1 md:grid-cols-2 gap-5">
-
-            <!-- ================= 模組一：喝水紀錄與提醒 ================= -->
-            <section class="bg-morandi-card border border-morandi-border rounded-3xl p-5 sm:p-6 shadow-sm flex flex-col justify-between space-y-5">
+        <!-- 雙欄主區塊 -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            
+            <!-- 💧 飲水追蹤區塊 -->
+            <div class="bg-morandi-bg/50 rounded-xl p-6 border border-morandi-light flex flex-col justify-between">
                 <div>
-                    <!-- 卡片標題與目標設定 -->
-                    <div class="flex items-center justify-between mb-4">
-                        <div class="flex items-center gap-2">
-                            <span class="w-3 h-3 rounded-full bg-morandi-green"></span>
-                            <h2 class="text-base sm:text-lg font-bold text-morandi-text">今日飲水紀錄</h2>
-                        </div>
-                        <div class="flex items-center gap-1.5 text-xs text-morandi-muted bg-white px-2.5 py-1 rounded-lg border border-morandi-border">
-                            <span>目標</span>
-                            <input type="number" id="water-goal-input" value="1500" step="100" min="500" max="5000"
-                                onchange="updateWaterGoal(this.value)"
-                                class="w-12 text-center font-semibold text-morandi-greenDark bg-transparent focus:outline-none border-b border-dashed border-morandi-green">
-                            <span>cc</span>
+                    <div class="flex justify-between items-center mb-4">
+                        <h2 class="text-lg font-bold text-morandi-text flex items-center gap-2">
+                            <span>●</span> 今日飲水紀錄
+                        </h2>
+                        <div class="flex items-center gap-1 bg-white px-2.5 py-1 rounded-lg border border-morandi-light text-xs">
+                            <span class="text-morandi-muted">目標</span>
+                            <input type="number" id="water-goal-input" value="2000" step="100" min="500" max="5000" onchange="updateWaterGoal()" class="w-14 text-right font-bold text-morandi-primary bg-transparent focus:outline-none">
+                            <span class="text-morandi-muted">cc</span>
                         </div>
                     </div>
 
-                    <!-- 視覺化水杯進度與數據 -->
-                    <div class="flex items-center gap-5 bg-white/70 border border-morandi-border/60 rounded-2xl p-4">
-                        <!-- 動態水杯圖示 -->
-                        <div class="relative w-20 h-28 rounded-b-2xl rounded-t-md border-2 border-morandi-green/60 bg-morandi-bg overflow-hidden shrink-0 shadow-inner">
-                            <!-- 水位高度 -->
-                            <div id="water-visual-fill" class="water-fill absolute bottom-0 left-0 right-0 bg-morandi-green/80" style="height: 0%;">
-                                <div class="w-full h-1.5 bg-white/30"></div>
-                            </div>
-                            <!-- 杯身刻度線 -->
-                            <div class="absolute inset-0 flex flex-col justify-evenly pointer-events-none px-1.5 opacity-40">
-                                <div class="w-3 border-t border-morandi-text"></div>
-                                <div class="w-2 border-t border-morandi-text"></div>
-                                <div class="w-3 border-t border-morandi-text"></div>
-                            </div>
+                    <div class="flex items-center gap-6 mb-6">
+                        <!-- 水瓶視覺圖 -->
+                        <div class="w-24 h-36 bg-white rounded-xl border-2 border-morandi-primary/30 p-1.5 relative overflow-hidden flex flex-col justify-end shadow-inner">
+                            <div id="water-fill" class="w-full bg-morandi-primary/30 rounded-lg transition-all duration-500" style="height: 0%;"></div>
+                            <div class="absolute inset-0 flex items-center justify-center font-bold text-morandi-text text-sm drop-shadow-sm" id="water-percent">0%</div>
                         </div>
-
-                        <!-- 數字進度區 -->
-                        <div class="flex-1 space-y-1.5">
-                            <div class="flex items-baseline gap-1.5">
-                                <span id="water-current" class="text-3xl sm:text-4xl font-bold text-morandi-greenDark tracking-tight">0</span>
-                                <span class="text-sm text-morandi-muted font-medium">/ <span id="water-goal-display">1500</span> cc</span>
+                        <div>
+                            <div class="text-4xl font-extrabold text-morandi-text mb-1">
+                                <span id="current-water">0</span><span class="text-lg font-normal text-morandi-muted"> / <span id="target-water-display">2000</span> cc</span>
                             </div>
-                            <div class="flex items-center justify-between text-xs">
-                                <span id="water-status-msg" class="text-morandi-muted">準備好補充水分了嗎？</span>
-                                <span id="water-percent" class="font-bold text-morandi-greenDark">0%</span>
-                            </div>
-                            <!-- 橫向進度條 -->
-                            <div class="w-full h-2 bg-morandi-bg rounded-full overflow-hidden">
-                                <div id="water-bar-fill" class="h-full bg-morandi-green transition-all duration-500 rounded-full" style="width: 0%"></div>
-                            </div>
+                            <p class="text-sm text-morandi-primary font-medium" id="water-tip">先喝一杯溫開水開啟好精神吧！</p>
                         </div>
                     </div>
 
-                    <!-- 快速加水按鈕區 -->
-                    <div class="mt-4">
-                        <div class="flex items-center justify-between mb-2">
-                            <span class="text-xs font-medium text-morandi-muted">快速紀錄一杯水：</span>
-                            <button onclick="undoLastWater()" id="btn-water-undo" class="text-xs text-morandi-muted hover:text-morandi-accent underline hidden cursor-pointer">
-                                復原上一筆
-                            </button>
-                        </div>
+                    <!-- 快速新增按鈕 -->
+                    <div class="mb-6">
+                        <p class="text-xs text-morandi-muted mb-2">快速記錄一杯水：</p>
                         <div class="grid grid-cols-4 gap-2">
-                            <button onclick="addWater(150)" class="py-2.5 px-1 rounded-xl bg-morandi-greenLight/80 hover:bg-morandi-green text-morandi-greenDark hover:text-white font-semibold text-xs sm:text-sm transition-all active:scale-95 cursor-pointer">
-                                +150<span class="text-[10px] font-normal ml-0.5">cc</span>
-                            </button>
-                            <button onclick="addWater(250)" class="py-2.5 px-1 rounded-xl bg-morandi-greenLight/80 hover:bg-morandi-green text-morandi-greenDark hover:text-white font-semibold text-xs sm:text-sm transition-all active:scale-95 cursor-pointer">
-                                +250<span class="text-[10px] font-normal ml-0.5">cc</span>
-                            </button>
-                            <button onclick="addWater(300)" class="py-2.5 px-1 rounded-xl bg-morandi-greenLight/80 hover:bg-morandi-green text-morandi-greenDark hover:text-white font-semibold text-xs sm:text-sm transition-all active:scale-95 cursor-pointer">
-                                +300<span class="text-[10px] font-normal ml-0.5">cc</span>
-                            </button>
-                            <button onclick="addWater(500)" class="py-2.5 px-1 rounded-xl bg-morandi-greenLight/80 hover:bg-morandi-green text-morandi-greenDark hover:text-white font-semibold text-xs sm:text-sm transition-all active:scale-95 cursor-pointer">
-                                +500<span class="text-[10px] font-normal ml-0.5">cc</span>
-                            </button>
+                            <button onclick="addWater(150)" class="py-2 bg-white hover:bg-morandi-primary hover:text-white border border-morandi-light rounded-lg text-xs font-semibold text-morandi-text transition shadow-sm">+150 cc</button>
+                            <button onclick="addWater(250)" class="py-2 bg-white hover:bg-morandi-primary hover:text-white border border-morandi-light rounded-lg text-xs font-semibold text-morandi-text transition shadow-sm">+250 cc</button>
+                            <button onclick="addWater(300)" class="py-2 bg-white hover:bg-morandi-primary hover:text-white border border-morandi-light rounded-lg text-xs font-semibold text-morandi-text transition shadow-sm">+300 cc</button>
+                            <button onclick="addWater(500)" class="py-2 bg-white hover:bg-morandi-primary hover:text-white border border-morandi-light rounded-lg text-xs font-semibold text-morandi-text transition shadow-sm">+500 cc</button>
                         </div>
                     </div>
                 </div>
 
-                <!-- 喝水間隔計時器 -->
-                <div class="pt-4 border-t border-morandi-border flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-morandi-bg/50 p-3.5 rounded-2xl">
-                    <div>
-                        <div class="flex items-center gap-1.5 text-xs text-morandi-muted mb-0.5">
-                            <span>喝水提醒間隔：每</span>
-                            <select id="water-interval-select" onchange="changeWaterInterval(this.value)"
-                                class="bg-white border border-morandi-border rounded-md px-1.5 py-0.5 font-semibold text-morandi-text focus:outline-none cursor-pointer">
-                                <option value="30">30 分鐘</option>
-                                <option value="45" selected>45 分鐘</option>
-                                <option value="60">60 分鐘</option>
-                                <option value="90">90 分鐘</option>
-                            </select>
-                        </div>
-                        <div id="water-timer-display" class="text-2xl font-bold font-mono text-morandi-text tracking-wider">45:00</div>
+                <!-- 喝水倒數計時器 -->
+                <div class="bg-white p-4 rounded-xl border border-morandi-light">
+                    <div class="flex justify-between items-center mb-2">
+                        <span class="text-xs text-morandi-muted">喝水提醒間隔：每</span>
+                        <select id="water-interval" onchange="changeWaterInterval()" class="text-xs bg-morandi-bg border border-morandi-light rounded px-2 py-1 text-morandi-text focus:outline-none">
+                            <option value="10">10 秒測試</option>
+                            <option value="30">30 分鐘</option>
+                            <option value="45" selected>45 分鐘</option>
+                            <option value="60">60 分鐘</option>
+                            <option value="90">90 分鐘</option>
+                        </select>
                     </div>
-
-                    <div class="flex items-center gap-2">
-                        <button id="btn-water-toggle" onclick="toggleWaterTimer()"
-                            class="flex-1 sm:flex-none px-4 py-2 rounded-xl bg-morandi-green hover:bg-morandi-greenDark text-white text-xs font-semibold transition-colors shadow-sm cursor-pointer">
-                            開始計時
-                        </button>
-                        <button onclick="resetWaterTimer()"
-                            class="p-2 rounded-xl bg-white border border-morandi-border hover:bg-morandi-bg text-morandi-muted transition-colors cursor-pointer" title="重設計時">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
-                            </svg>
-                        </button>
+                    <div class="flex items-center justify-between">
+                        <span id="water-timer-display" class="text-2xl font-mono font-bold text-morandi-primary">45:00</span>
+                        <div class="flex gap-2">
+                            <button id="water-start-btn" onclick="toggleWaterTimer()" class="px-4 py-1.5 bg-morandi-primary text-white text-xs font-medium rounded-lg hover:bg-morandi-primary-dark transition shadow-sm">開始計時</button>
+                            <button onclick="resetWaterTimer()" class="p-1.5 bg-morandi-bg border border-morandi-light rounded-lg text-morandi-muted hover:text-morandi-text transition">🔄</button>
+                        </div>
                     </div>
                 </div>
-            </section>
+            </div>
 
-            <!-- ================= 模組二：護眼 20-20-20 提醒 ================= -->
-            <section class="bg-morandi-card border border-morandi-border rounded-3xl p-5 sm:p-6 shadow-sm flex flex-col justify-between space-y-5">
+            <!-- 👀 護眼 20-20-20 區塊 -->
+            <div class="bg-morandi-bg/50 rounded-xl p-6 border border-morandi-light flex flex-col justify-between">
                 <div>
-                    <!-- 卡片標題與完成次數 -->
-                    <div class="flex items-center justify-between mb-4">
-                        <div class="flex items-center gap-2">
-                            <span class="w-3 h-3 rounded-full bg-morandi-blue"></span>
-                            <h2 class="text-base sm:text-lg font-bold text-morandi-text">護眼 20-20-20</h2>
-                        </div>
-                        <div class="text-xs bg-morandi-blueLight text-morandi-blueDark font-semibold px-3 py-1 rounded-full">
-                            今日已護眼 <span id="eye-rest-count" class="text-sm font-bold mx-0.5">0</span> 次
-                        </div>
+                    <div class="flex justify-between items-center mb-4">
+                        <h2 class="text-lg font-bold text-morandi-text flex items-center gap-2">
+                            <span>●</span> 護眼 20-20-20
+                        </h2>
+                        <span id="eye-count-badge" class="text-xs bg-morandi-accent/20 text-morandi-text px-2.5 py-1 rounded-full font-medium">今日已護眼 0 次</span>
                     </div>
 
-                    <!-- 倒數計時主視覺框 -->
-                    <div class="bg-white/70 border border-morandi-border/60 rounded-2xl p-5 text-center space-y-2 relative overflow-hidden">
-                        <div class="text-xs text-morandi-muted flex items-center justify-center gap-1.5">
-                            <span>專注用眼間隔：每</span>
-                            <select id="eye-interval-select" onchange="changeEyeInterval(this.value)"
-                                class="bg-morandi-bg border border-morandi-border rounded-md px-1.5 py-0.5 font-semibold text-morandi-blueDark focus:outline-none cursor-pointer">
-                                <option value="15">15 分鐘</option>
+                    <div class="text-center bg-white rounded-xl p-6 border border-morandi-light mb-6 shadow-sm">
+                        <div class="flex justify-center items-center gap-2 mb-2">
+                            <span class="text-xs text-morandi-muted">專用眼間隔：每</span>
+                            <select id="eye-interval" onchange="changeEyeInterval()" class="text-xs bg-morandi-bg border border-morandi-light rounded px-2 py-1 text-morandi-text focus:outline-none">
+                                <option value="0.16">10 秒測試</option>
                                 <option value="20" selected>20 分鐘</option>
                                 <option value="30">30 分鐘</option>
-                                <option value="40">40 分鐘</option>
                             </select>
-                            <span>休息一次</span>
+                            <span class="text-xs text-morandi-muted">休息一次</span>
                         </div>
-
-                        <!-- 大字體倒數時間 -->
-                        <div id="eye-timer-display" class="text-5xl sm:text-6xl font-bold font-mono text-morandi-blueDark tracking-wider py-2">
-                            20:00
+                        <div id="eye-timer-display" class="text-5xl font-mono font-extrabold text-morandi-text tracking-wider my-3">20:00</div>
+                        <div class="w-full bg-morandi-light h-2 rounded-full overflow-hidden mb-2">
+                            <div id="eye-progress" class="bg-morandi-secondary h-full transition-all duration-300" style="width: 100%;"></div>
                         </div>
-
-                        <!-- 護眼進度條 -->
-                        <div class="w-full h-1.5 bg-morandi-bg rounded-full overflow-hidden">
-                            <div id="eye-bar-fill" class="h-full bg-morandi-blue transition-all duration-1000 rounded-full" style="width: 100%"></div>
-                        </div>
-
-                        <p class="text-xs text-morandi-muted pt-1">
-                            每用眼 20 分鐘，眺望 6 公尺遠方 20 秒並用力眨眼
-                        </p>
+                        <p class="text-xs text-morandi-muted">每用眼 20 分鐘，眺望 6 公尺遠方 20 秒並用力眨眼</p>
                     </div>
                 </div>
 
-                <!-- 護眼計時控制按鈕區 -->
-                <div class="space-y-2.5">
-                    <div class="flex items-center gap-2.5">
-                        <button id="btn-eye-toggle" onclick="toggleEyeTimer()"
-                            class="flex-1 py-3 px-4 rounded-xl bg-morandi-blue hover:bg-morandi-blueDark text-white font-semibold text-sm transition-colors shadow-sm cursor-pointer">
-                            開始護眼計時
-                        </button>
-                        <button onclick="resetEyeTimer()"
-                            class="p-3 rounded-xl bg-white border border-morandi-border hover:bg-morandi-bg text-morandi-muted transition-colors cursor-pointer" title="重設護眼計時">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
-                            </svg>
-                        </button>
-                    </div>
-
-                    <!-- 立即進入20秒休息按鈕 -->
-                    <button onclick="triggerEyeRestOverlay()"
-                        class="w-full py-2 rounded-xl bg-morandi-blueLight/70 hover:bg-morandi-blueLight text-morandi-blueDark text-xs font-medium transition-colors cursor-pointer">
-                        眼睛酸了？立即啟動 20 秒望遠休息模式
-                    </button>
-                </div>
-            </section>
-
-        </main>
-
-        <!-- 底部狀態提示與資訊欄 -->
-        <footer class="text-center text-xs text-morandi-muted py-2 flex flex-col sm:flex-row items-center justify-between gap-2 px-2">
-            <span id="toast-bar" class="text-morandi-greenDark font-medium min-h-[18px]">✨ 數據會自動儲存於瀏覽器，每日午夜自動歸零重新計算。</span>
-            <button onclick="manualResetToday()" class="text-morandi-muted hover:text-morandi-accent underline cursor-pointer">
-                手動重置今日數據
-            </button>
-        </footer>
-    </div>
-
-    <!-- ================= 全螢幕 20 秒護眼引導遮罩 ================= -->
-    <div id="eye-rest-overlay" class="fixed inset-0 z-50 bg-[#2C3531]/95 backdrop-blur-md hidden flex-col items-center justify-center p-6 text-center text-[#F4F1EA]">
-        <div class="max-w-md w-full space-y-6">
-            <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-morandi-blue/30 text-morandi-blueLight text-xs font-medium tracking-wide">
-                <span>🌿 20-20-20 護眼時間</span>
-            </div>
-
-            <h2 class="text-2xl sm:text-3xl font-bold tracking-tight">請將視線移開螢幕</h2>
-            <p class="text-sm sm:text-base text-[#D3D7D4] leading-relaxed">
-                看看 <strong class="text-white underline decoration-morandi-green">6 公尺（20 呎）以外的遠方</strong>（例如窗外樹梢或遠處建築），順便用力眨眼 5 次滋潤眼球！
-            </p>
-
-            <!-- 20秒呼吸倒數圓圈 -->
-            <div class="relative w-40 h-40 mx-auto flex items-center justify-center my-4">
-                <div class="absolute inset-0 rounded-full bg-morandi-green/25 animate-breathe"></div>
-                <div class="relative w-32 h-32 rounded-full bg-morandi-card text-morandi-text flex flex-col items-center justify-center shadow-lg">
-                    <span id="overlay-seconds" class="text-4xl font-bold font-mono text-morandi-greenDark">20</span>
-                    <span class="text-[11px] text-morandi-muted mt-0.5">秒後自動結束</span>
+                <!-- 護眼控制按鈕 -->
+                <div class="space-y-2">
+                    <button id="eye-start-btn" onclick="toggleEyeTimer()" class="w-full py-2.5 bg-morandi-accent text-white font-medium rounded-xl hover:bg-opacity-90 transition shadow-sm text-sm">開始護眼計時</button>
+                    <button onclick="triggerRestModal()" class="w-full py-2 bg-white border border-morandi-light text-morandi-text text-xs rounded-xl hover:bg-morandi-light transition">眼睛酸了？立即啟動 20 秒望遠休息模式</button>
                 </div>
             </div>
 
-            <div class="pt-2 flex items-center justify-center gap-3">
-                <button onclick="completeEyeRest(true)" class="px-5 py-2.5 rounded-xl bg-morandi-green hover:bg-morandi-greenDark text-white text-sm font-medium transition-colors cursor-pointer">
-                    我休息好了（計入次數）
-                </button>
-                <button onclick="closeEyeRestOverlay()" class="px-4 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 text-white/80 text-xs transition-colors cursor-pointer">
-                    略過本次
-                </button>
-            </div>
+        </div>
+
+        <div class="mt-6 pt-4 border-t border-morandi-light flex justify-between items-center text-xs text-morandi-muted">
+            <span>✨ 資料會自動儲存於瀏覽器，每日午夜自動歸零重新計算。</span>
+            <button onclick="resetAllData()" class="hover:text-morandi-text underline">手動重置今日數據</button>
         </div>
     </div>
 
-    <!-- JavaScript 核心邏輯 -->
+    <!-- 🔔 持续响铃警报弹窗（覆盖全场直到手动关闭） -->
+    <div id="alarm-modal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center hidden">
+        <div class="bg-white rounded-2xl p-8 max-w-md w-full text-center shadow-2xl border-4 border-morandi-secondary animate-bounce">
+            <div id="alarm-icon" class="text-5xl mb-4">💧</div>
+            <h3 id="alarm-title" class="text-2xl font-bold text-morandi-text mb-2">該喝水囉！</h3>
+            <p id="alarm-desc" class="text-morandi-muted mb-6 text-sm">補充 250cc 溫開水，讓思緒更清晰，順便伸展一下身體～</p>
+            <button onclick="dismissAlarm()" class="w-full py-3 bg-morandi-primary text-white font-bold rounded-xl hover:bg-morandi-primary-dark transition text-lg shadow-lg">
+                我知道了，關閉提醒 🔕
+            </button>
+        </div>
+    </div>
+
+    <!-- 👀 20秒護眼休息全螢幕遮罩 -->
+    <div id="rest-modal" class="fixed inset-0 bg-morandi-text/90 backdrop-blur-md z-50 flex flex-col items-center justify-center text-white hidden">
+        <div class="text-6xl mb-4 animate-pulse">👀</div>
+        <h2 class="text-3xl font-bold mb-2">護眼 20-20-20 休息時間</h2>
+        <p class="text-morandi-light text-sm mb-8">請放鬆肩頸，望向 6 公尺外的遠方，用力眨眼...</p>
+        <div id="rest-countdown" class="text-7xl font-mono font-bold text-morandi-secondary mb-8">20</div>
+        <button onclick="closeRestModal()" class="px-6 py-2 bg-white/20 hover:bg-white/30 rounded-full text-sm font-medium transition">提前結束休息</button>
+    </div>
+
     <script>
-        // ================= 1. 狀態與 LocalStorage 管理 =================
-        const STORAGE_KEY = 'morandi_health_helper_v1';
-
-        function getTodayDateString() {
-            const now = new Date();
-            return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
-        }
-
-        // 預設狀態
-        let appState = {
-            date: getTodayDateString(),
-            waterCurrent: 0,
-            waterHistory: [], // 記錄每次加水量，方便復原
-            waterGoal: 1500,
-            waterIntervalMin: 45,
-            eyeRestCount: 0,
-            eyeIntervalMin: 20,
-            soundEnabled: true
-        };
-
-        // 計時器運行變數
-        let waterSecondsLeft = 45 * 60;
-        let waterTimerRunning = false;
-        let waterTimerId = null;
-
-        let eyeSecondsLeft = 20 * 60;
-        let eyeTimerRunning = false;
-        let eyeTimerId = null;
-
-        let overlaySecondsLeft = 20;
-        let overlayTimerId = null;
-
-        // 初始化載入資料
-        function loadState() {
-            try {
-                const saved = localStorage.getItem(STORAGE_KEY);
-                if (saved) {
-                    const parsed = JSON.parse(saved);
-                    const today = getTodayDateString();
-
-                    // 保留設定值
-                    appState.waterGoal = parsed.waterGoal || 1500;
-                    appState.waterIntervalMin = parsed.waterIntervalMin || 45;
-                    appState.eyeIntervalMin = parsed.eyeIntervalMin || 20;
-                    appState.soundEnabled = parsed.soundEnabled !== undefined ? parsed.soundEnabled : true;
-
-                    // 檢查是否跨日：若同一天則載入今日進度，若跨日則自動歸零
-                    if (parsed.date === today) {
-                        appState.date = today;
-                        appState.waterCurrent = parsed.waterCurrent || 0;
-                        appState.waterHistory = parsed.waterHistory || [];
-                        appState.eyeRestCount = parsed.eyeRestCount || 0;
-                    } else {
-                        appState.date = today;
-                        appState.waterCurrent = 0;
-                        appState.waterHistory = [];
-                        appState.eyeRestCount = 0;
-                        saveState();
+        // -------------------------------------------------------------
+        // Web Worker 背景精準計時核心 (解決 Chrome 背景分頁降速問題)
+        // -------------------------------------------------------------
+        const workerCode = `
+            let timers = { water: null, eye: null };
+            self.onmessage = function(e) {
+                const { action, type, duration } = e.data;
+                if (action === 'start') {
+                    timers[type] = { targetTime: Date.now() + duration * 1000, duration: duration };
+                } else if (action === 'stop') {
+                    timers[type] = null;
+                }
+            };
+            setInterval(() => {
+                const now = Date.now();
+                for (let type in timers) {
+                    if (timers[type]) {
+                        const remaining = Math.max(0, Math.ceil((timers[type].targetTime - now) / 1000));
+                        self.postMessage({ type: type, remaining: remaining });
+                        if (remaining <= 0) {
+                            timers[type] = null;
+                        }
                     }
                 }
-            } catch (e) {
-                console.error('讀取儲存資料失敗:', e);
+            }, 500);
+        `;
+        const blob = new Blob([workerCode], { type: 'application/javascript' });
+        const timerWorker = new Worker(URL.createObjectURL(blob));
+
+        timerWorker.onmessage = function(e) {
+            const { type, remaining } = e.data;
+            if (type === 'water') {
+                waterRemaining = remaining;
+                updateWaterDisplay();
+                if (waterRemaining <= 0 && isWaterRunning) {
+                    isWaterRunning = false;
+                    document.getElementById('water-start-btn').textContent = "開始計時";
+                    document.getElementById('water-start-btn').className = "px-4 py-1.5 bg-morandi-primary text-white text-xs font-medium rounded-lg hover:bg-morandi-primary-dark transition shadow-sm";
+                    triggerAlarm('water', '💧 該喝水囉！', '補充水分保持好精神，起來喝杯水吧！');
+                }
+            } else if (type === 'eye') {
+                eyeRemaining = remaining;
+                updateEyeDisplay();
+                if (eyeRemaining <= 0 && isEyeRunning) {
+                    isEyeRunning = false;
+                    document.getElementById('eye-start-btn').textContent = "開始護眼計時";
+                    document.getElementById('eye-start-btn').className = "w-full py-2.5 bg-morandi-accent text-white font-medium rounded-xl hover:bg-opacity-90 transition shadow-sm text-sm";
+                    incrementEyeCount();
+                    triggerAlarm('eye', '👀 眼睛該休息囉！', '每用眼 20 分鐘，請眺望遠方 20 秒並用力眨眼！');
+                    triggerRestModal();
+                }
             }
+        };
 
-            // 同步時間設定到倒數器
-            waterSecondsLeft = appState.waterIntervalMin * 60;
-            eyeSecondsLeft = appState.eyeIntervalMin * 60;
+        // -------------------------------------------------------------
+        // 資料與狀態管理
+        // -------------------------------------------------------------
+        let todayStr = new Date().toISOString().slice(0, 10);
+        let appData = JSON.parse(localStorage.getItem('life_assistant_data')) || {
+            date: todayStr,
+            waterCurrent: 0,
+            waterGoal: 2000,
+            eyeCount: 0
+        };
 
-            // 同步下拉選單與輸入框 UI
-            document.getElementById('water-goal-input').value = appState.waterGoal;
-            document.getElementById('water-interval-select').value = appState.waterIntervalMin;
-            document.getElementById('eye-interval-select').value = appState.eyeIntervalMin;
-
-            updateSoundUI();
-            updateWaterUI();
-            updateEyeUI();
-            updateWaterTimerDisplay();
-            updateEyeTimerDisplay();
-            checkNotificationStatus();
+        if (appData.date !== todayStr) {
+            appData = { date: todayStr, waterCurrent: 0, waterGoal: appData.waterGoal || 2000, eyeCount: 0 };
+            saveData();
         }
 
-        function saveState() {
+        function saveData() { localStorage.setItem('life_assistant_data', JSON.stringify(appData)); }
+
+        let soundEnabled = true;
+        let isWaterRunning = false;
+        let waterRemaining = 45 * 60;
+        let isEyeRunning = false;
+        let eyeRemaining = 20 * 60;
+        let restInterval = null;
+        let alarmInterval = null; // 持續響鈴計時器
+
+        // 初始化介面
+        document.getElementById('water-goal-input').value = appData.waterGoal;
+        document.getElementById('target-water-display').textContent = appData.waterGoal;
+        updateWaterUI();
+        updateEyeCountUI();
+
+        // -------------------------------------------------------------
+        // 音效系統 (Web Audio API 產生清脆風鈴聲)
+        // -------------------------------------------------------------
+        function playChime() {
+            if (!soundEnabled) return;
             try {
-                appState.date = getTodayDateString();
-                localStorage.setItem(STORAGE_KEY, JSON.stringify(appState));
-            } catch (e) {
-                console.error('儲存資料失敗:', e);
-            }
-        }
-
-        // 每分鐘檢查一次是否跨過午夜 00:00，自動歸零
-        setInterval(() => {
-            const today = getTodayDateString();
-            if (appState.date !== today) {
-                appState.date = today;
-                appState.waterCurrent = 0;
-                appState.waterHistory = [];
-                appState.eyeRestCount = 0;
-                saveState();
-                updateWaterUI();
-                updateEyeUI();
-                showToast('🌅 新的一天開始囉！飲水與護眼紀錄已自動歸零。');
-            }
-        }, 60000);
-
-        // ================= 2. Web Audio API 溫柔風鈴音效 =================
-        let audioCtx = null;
-
-        function playChime(type = 'water') {
-            if (!appState.soundEnabled && type !== 'test') return;
-
-            try {
-                if (!audioCtx) {
-                    const AudioContext = window.AudioContext || window.webkitAudioContext;
-                    audioCtx = new AudioContext();
-                }
-                if (audioCtx.state === 'suspended') {
-                    audioCtx.resume();
-                }
-
-                const now = audioCtx.currentTime;
-                // 選擇和弦音頻：喝水清脆水滴感 (C5 - E5 - G5)，護眼溫柔療癒和弦 (F4 - A4 - C5 - E5)
-                const notes = type === 'eye' ? [349.23, 440.00, 523.25, 659.25] : [523.25, 659.25, 783.99];
-
-                notes.forEach((freq, index) => {
-                    const osc = audioCtx.createOscillator();
-                    const gain = audioCtx.createGain();
-
+                const ctx = new (window.AudioContext || window.webkitAudioContext)();
+                const notes = [523.25, 659.25, 783.99, 1046.50]; // C5, E5, G5, C6
+                notes.forEach((freq, idx) => {
+                    const osc = ctx.createOscillator();
+                    const gain = ctx.createGain();
                     osc.type = 'sine';
-                    osc.frequency.setValueAtTime(freq, now + index * 0.18);
-
-                    // 柔和的淡入與長尾音淡出 (風鈴質感)
-                    gain.gain.setValueAtTime(0.001, now + index * 0.18);
-                    gain.gain.exponentialRampToValueAtTime(0.18, now + index * 0.18 + 0.04);
-                    gain.gain.exponentialRampToValueAtTime(0.0001, now + index * 0.18 + 1.4);
-
+                    osc.frequency.value = freq;
+                    gain.gain.setValueAtTime(0.15, ctx.currentTime + idx * 0.1);
+                    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + idx * 0.1 + 1.2);
                     osc.connect(gain);
-                    gain.connect(audioCtx.destination);
-
-                    osc.start(now + index * 0.18);
-                    osc.stop(now + index * 0.18 + 1.5);
+                    gain.connect(ctx.destination);
+                    osc.start(ctx.currentTime + idx * 0.1);
+                    osc.stop(ctx.currentTime + idx * 0.1 + 1.2);
                 });
-
-                if (type === 'test') {
-                    showToast('🔔 已播放溫柔風鈴提示音');
-                }
-            } catch (e) {
-                console.warn('無法播放音效:', e);
-            }
+            } catch(e) { console.log('Audio error:', e); }
         }
 
+        function testSound() { playChime(); }
         function toggleSound() {
-            appState.soundEnabled = !appState.soundEnabled;
-            saveState();
-            updateSoundUI();
-            if (appState.soundEnabled) {
-                playChime('test');
-            }
+            soundEnabled = !soundEnabled;
+            const btn = document.getElementById('sound-toggle-btn');
+            btn.textContent = soundEnabled ? "🔊 音效開啟" : "🔇 音效關閉";
+            btn.className = soundEnabled ? "px-3 py-1.5 rounded-full text-xs font-medium bg-morandi-primary/20 text-morandi-primary" : "px-3 py-1.5 rounded-full text-xs font-medium bg-morandi-light text-morandi-muted";
         }
 
-        function updateSoundUI() {
-            const iconOn = document.getElementById('icon-sound-on');
-            const iconOff = document.getElementById('icon-sound-off');
-            const text = document.getElementById('sound-text');
+        // -------------------------------------------------------------
+        // 持續響鈴與關閉警報機制
+        // -------------------------------------------------------------
+        function triggerAlarm(type, title, desc) {
+            document.getElementById('alarm-icon').textContent = type === 'water' ? '💧' : '👀';
+            document.getElementById('alarm-title').textContent = title;
+            document.getElementById('alarm-desc').textContent = desc;
+            document.getElementById('alarm-modal').classList.remove('hidden');
 
-            if (appState.soundEnabled) {
-                iconOn.classList.remove('hidden');
-                iconOff.classList.add('hidden');
-                text.textContent = '音效開啟';
-            } else {
-                iconOn.classList.add('hidden');
-                iconOff.classList.remove('hidden');
-                text.textContent = '靜音模式';
-            }
-        }
-
-        // ================= 3. 瀏覽器桌面通知管理 =================
-        function checkNotificationStatus() {
-            const dot = document.getElementById('notify-dot');
-            const text = document.getElementById('notify-text');
-
-            if (!('Notification' in window)) {
-                dot.className = 'w-2 h-2 rounded-full bg-gray-400';
-                text.textContent = '瀏覽器不支援通知';
-                return;
-            }
-
+            // 桌面通知
             if (Notification.permission === 'granted') {
-                dot.className = 'w-2 h-2 rounded-full bg-morandi-green';
-                text.textContent = '桌面通知已啟用';
-            } else if (Notification.permission === 'denied') {
-                dot.className = 'w-2 h-2 rounded-full bg-morandi-accent';
-                text.textContent = '通知已被封鎖';
-            } else {
-                dot.className = 'w-2 h-2 rounded-full bg-amber-400';
-                text.textContent = '開啟桌面通知';
+                new Notification(title, { body: desc, icon: 'https://cdn-icons-png.flaticon.com/512/2921/2921822.png' });
+            }
+
+            // 立即響一次，並啟動持續響鈴（每 3 秒一次，直到手動關閉）
+            playChime();
+            if (alarmInterval) clearInterval(alarmInterval);
+            alarmInterval = setInterval(() => {
+                playChime();
+            }, 3000);
+        }
+
+        function dismissAlarm() {
+            document.getElementById('alarm-modal').classList.add('hidden');
+            if (alarmInterval) {
+                clearInterval(alarmInterval);
+                alarmInterval = null;
             }
         }
 
-        function requestNotificationPermission() {
-            if (!('Notification' in window)) {
-                showToast('⚠️ 您的瀏覽器不支援桌面通知功能。');
+        // -------------------------------------------------------------
+        // 桌面通知權限申請
+        // -------------------------------------------------------------
+        function toggleNotification() {
+            if (!("Notification" in window)) {
+                alert("此瀏覽器不支援桌面通知");
                 return;
             }
-
-            if (Notification.permission === 'granted') {
-                sendBrowserNotification('生活小幫手通知測試', '太棒了！時間到時我會像這樣溫柔提醒您喝水與休息。');
-                return;
-            }
-
             Notification.requestPermission().then(permission => {
-                checkNotificationStatus();
-                if (permission === 'granted') {
-                    sendBrowserNotification('已開啟提醒通知！', '接下來我會在您專注工作時定時提醒您。');
-                    showToast('✅ 桌面通知權限已開啟！');
+                const btn = document.getElementById('notif-btn');
+                if (permission === "granted") {
+                    btn.textContent = "✅ 桌面通知已啟用";
+                    btn.className = "px-3 py-1.5 rounded-full text-xs font-medium bg-green-100 text-green-700";
+                    new Notification("生活小幫手", { body: "桌面通知設定成功！時間到時會準時提醒您。" });
                 } else {
-                    showToast('ℹ️ 未開啟通知權限，時間到時仍會有網頁音效提醒。');
+                    btn.textContent = "❌ 通知已被封鎖";
+                    btn.className = "px-3 py-1.5 rounded-full text-xs font-medium bg-red-100 text-red-700";
                 }
             });
         }
 
-        function sendBrowserNotification(title, body) {
-            if ('Notification' in window && Notification.permission === 'granted') {
-                try {
-                    const notification = new Notification(title, {
-                        body: body,
-                        silent: true // 由網頁自己的 Web Audio 發出更溫柔的風鈴聲
-                    });
-                    notification.onclick = () => {
-                        window.focus();
-                        notification.close();
-                    };
-                } catch (e) {
-                    console.warn('發送通知失敗:', e);
-                }
-            }
+        if ("Notification" in window && Notification.permission === "granted") {
+            const btn = document.getElementById('notif-btn');
+            btn.textContent = "✅ 桌面通知已啟用";
+            btn.className = "px-3 py-1.5 rounded-full text-xs font-medium bg-green-100 text-green-700";
         }
 
-        // ================= 4. 喝水追蹤與計時功能 =================
+        // -------------------------------------------------------------
+        // 飲水功能邏輯
+        // -------------------------------------------------------------
+        function updateWaterGoal() {
+            const val = parseInt(document.getElementById('water-goal-input').value) || 2000;
+            appData.waterGoal = val;
+            document.getElementById('target-water-display').textContent = val;
+            saveData();
+            updateWaterUI();
+        }
+
         function addWater(amount) {
-            // 檢查跨日
-            if (appState.date !== getTodayDateString()) loadState();
-
-            appState.waterCurrent += amount;
-            appState.waterHistory.push(amount);
-            saveState();
+            appData.waterCurrent += amount;
+            saveData();
             updateWaterUI();
-
-            // 喝水後貼心自動重置喝水倒數計時器，並繼續計時（若原本有開啟）
-            waterSecondsLeft = appState.waterIntervalMin * 60;
-            updateWaterTimerDisplay();
-            showToast(`💧 已紀錄 +${amount}cc！喝水倒數計時已自動重新計算。`);
-        }
-
-        function undoLastWater() {
-            if (appState.waterHistory.length === 0) return;
-            const last = appState.waterHistory.pop();
-            appState.waterCurrent = Math.max(0, appState.waterCurrent - last);
-            saveState();
-            updateWaterUI();
-            showToast(`↩️ 已復原上一筆 (${last}cc) 飲水紀錄。`);
-        }
-
-        function updateWaterGoal(newGoal) {
-            const val = parseInt(newGoal, 10);
-            if (isNaN(val) || val < 300) return;
-            appState.waterGoal = val;
-            saveState();
-            updateWaterUI();
-            showToast(`🎯 每日飲水目標已更新為 ${val}cc`);
         }
 
         function updateWaterUI() {
-            const current = appState.waterCurrent;
-            const goal = appState.waterGoal;
-            const percent = Math.min(100, Math.round((current / goal) * 100));
-
-            document.getElementById('water-current').textContent = current;
-            document.getElementById('water-goal-display').textContent = goal;
-            document.getElementById('water-percent').textContent = `${percent}%`;
-
-            // 更新水杯與進度條動畫高度
-            document.getElementById('water-visual-fill').style.height = `${percent}%`;
-            document.getElementById('water-bar-fill').style.width = `${percent}%`;
-
-            // 鼓勵語句
-            const msgEl = document.getElementById('water-status-msg');
-            if (current === 0) {
-                msgEl.textContent = '先喝一杯溫開水開啟好精神吧！';
-            } else if (percent < 50) {
-                msgEl.textContent = `還差 ${goal - current} cc，慢慢補充很棒喔！`;
-            } else if (percent < 100) {
-                msgEl.textContent = `已經過半啦！再喝 ${goal - current} cc 就達標！`;
-            } else {
-                msgEl.textContent = '🎉 太厲害了！今日飲水目標已達成！';
-            }
-
-            // 顯示/隱藏復原按鈕
-            const undoBtn = document.getElementById('btn-water-undo');
-            if (appState.waterHistory.length > 0) {
-                undoBtn.classList.remove('hidden');
-            } else {
-                undoBtn.classList.add('hidden');
-            }
+            document.getElementById('current-water').textContent = appData.waterCurrent;
+            const percent = Math.min(100, Math.round((appData.waterCurrent / appData.waterGoal) * 100));
+            document.getElementById('water-fill').style.height = percent + '%';
+            document.getElementById('water-percent').textContent = percent + '%';
+            
+            const tips = [
+                "先喝一杯溫開水開啟好精神吧！",
+                "水分是思路清晰的秘密武器！",
+                "喝水保持好膚質與好體力～",
+                "太棒了！離健康目標又更近一步囉！",
+                "達成目標！記得維持水潤好習慣！"
+            ];
+            let tipIdx = Math.min(4, Math.floor(percent / 25));
+            document.getElementById('water-tip').textContent = tips[tipIdx];
         }
 
-        function changeWaterInterval(mins) {
-            appState.waterIntervalMin = parseInt(mins, 10);
-            saveState();
-            resetWaterTimer();
-        }
-
-        function updateWaterTimerDisplay() {
-            const m = Math.floor(waterSecondsLeft / 60);
-            const s = waterSecondsLeft % 60;
-            document.getElementById('water-timer-display').textContent =
-                `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+        function changeWaterInterval() {
+            const mins = parseFloat(document.getElementById('water-interval').value);
+            waterRemaining = mins * 60;
+            if (isWaterRunning) {
+                timerWorker.postMessage({ action: 'start', type: 'water', duration: waterRemaining });
+            }
+            updateWaterDisplay();
         }
 
         function toggleWaterTimer() {
-            const btn = document.getElementById('btn-water-toggle');
-            if (waterTimerRunning) {
-                clearInterval(waterTimerId);
-                waterTimerRunning = false;
-                btn.textContent = '繼續計時';
-                btn.classList.replace('bg-morandi-accent', 'bg-morandi-green');
+            isWaterRunning = !isWaterRunning;
+            const btn = document.getElementById('water-start-btn');
+            if (isWaterRunning) {
+                btn.textContent = "暫停計時";
+                btn.className = "px-4 py-1.5 bg-morandi-secondary text-white text-xs font-medium rounded-lg hover:bg-opacity-90 transition shadow-sm";
+                timerWorker.postMessage({ action: 'start', type: 'water', duration: waterRemaining });
             } else {
-                waterTimerRunning = true;
-                btn.textContent = '暫停提醒';
-                btn.classList.replace('bg-morandi-green', 'bg-morandi-accent');
-
-                waterTimerId = setInterval(() => {
-                    if (waterSecondsLeft > 0) {
-                        waterSecondsLeft--;
-                        updateWaterTimerDisplay();
-                    } else {
-                        // 時間到！觸發喝水提醒
-                        playChime('water');
-                        sendBrowserNotification('💧 該喝口水囉！', `已經過了 ${appState.waterIntervalMin} 分鐘，起來喝杯水潤潤喉吧！`);
-                        showToast('💧 喝水時間到！喝完記得點上方按鈕紀錄喔～');
-                        // 自動重置並繼續下一輪倒數
-                        waterSecondsLeft = appState.waterIntervalMin * 60;
-                        updateWaterTimerDisplay();
-                    }
-                }, 1000);
+                btn.textContent = "繼續計時";
+                btn.className = "px-4 py-1.5 bg-morandi-primary text-white text-xs font-medium rounded-lg hover:bg-morandi-primary-dark transition shadow-sm";
+                timerWorker.postMessage({ action: 'stop', type: 'water' });
             }
         }
 
         function resetWaterTimer() {
-            clearInterval(waterTimerId);
-            waterTimerRunning = false;
-            waterSecondsLeft = appState.waterIntervalMin * 60;
-            updateWaterTimerDisplay();
-            const btn = document.getElementById('btn-water-toggle');
-            btn.textContent = '開始計時';
-            btn.className = 'flex-1 sm:flex-none px-4 py-2 rounded-xl bg-morandi-green hover:bg-morandi-greenDark text-white text-xs font-semibold transition-colors shadow-sm cursor-pointer';
+            isWaterRunning = false;
+            const mins = parseFloat(document.getElementById('water-interval').value);
+            waterRemaining = mins * 60;
+            timerWorker.postMessage({ action: 'stop', type: 'water' });
+            const btn = document.getElementById('water-start-btn');
+            btn.textContent = "開始計時";
+            btn.className = "px-4 py-1.5 bg-morandi-primary text-white text-xs font-medium rounded-lg hover:bg-morandi-primary-dark transition shadow-sm";
+            updateWaterDisplay();
         }
 
-        // ================= 5. 護眼 20-20-20 計時與引導遮罩 =================
-        function updateEyeUI() {
-            document.getElementById('eye-rest-count').textContent = appState.eyeRestCount;
+        function updateWaterDisplay() {
+            const mins = Math.floor(waterRemaining / 60);
+            const secs = waterRemaining % 60;
+            document.getElementById('water-timer-display').textContent = `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
         }
 
-        function changeEyeInterval(mins) {
-            appState.eyeIntervalMin = parseInt(mins, 10);
-            saveState();
-            resetEyeTimer();
-        }
-
-        function updateEyeTimerDisplay() {
-            const m = Math.floor(eyeSecondsLeft / 60);
-            const s = eyeSecondsLeft % 60;
-            document.getElementById('eye-timer-display').textContent =
-                `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
-
-            const totalSeconds = appState.eyeIntervalMin * 60;
-            const pct = Math.max(0, Math.min(100, (eyeSecondsLeft / totalSeconds) * 100));
-            document.getElementById('eye-bar-fill').style.width = `${pct}%`;
+        // -------------------------------------------------------------
+        // 護眼功能邏輯
+        // -------------------------------------------------------------
+        function changeEyeInterval() {
+            const mins = parseFloat(document.getElementById('eye-interval').value);
+            eyeRemaining = mins * 60;
+            if (isEyeRunning) {
+                timerWorker.postMessage({ action: 'start', type: 'eye', duration: eyeRemaining });
+            }
+            updateEyeDisplay();
         }
 
         function toggleEyeTimer() {
-            const btn = document.getElementById('btn-eye-toggle');
-            if (eyeTimerRunning) {
-                clearInterval(eyeTimerId);
-                eyeTimerRunning = false;
-                btn.textContent = '繼續護眼計時';
-                btn.classList.replace('bg-morandi-accent', 'bg-morandi-blue');
+            isEyeRunning = !isEyeRunning;
+            const btn = document.getElementById('eye-start-btn');
+            if (isEyeRunning) {
+                btn.textContent = "暫停護眼計時";
+                btn.className = "w-full py-2.5 bg-morandi-secondary text-white font-medium rounded-xl hover:bg-opacity-90 transition shadow-sm text-sm";
+                timerWorker.postMessage({ action: 'start', type: 'eye', duration: eyeRemaining });
             } else {
-                eyeTimerRunning = true;
-                btn.textContent = '暫停護眼計時';
-                btn.classList.replace('bg-morandi-blue', 'bg-morandi-accent');
-
-                eyeTimerId = setInterval(() => {
-                    if (eyeSecondsLeft > 0) {
-                        eyeSecondsLeft--;
-                        updateEyeTimerDisplay();
-                    } else {
-                        // 時間到！暫停主計時器並跳出 20 秒望遠引導
-                        clearInterval(eyeTimerId);
-                        eyeTimerRunning = false;
-                        playChime('eye');
-                        sendBrowserNotification('👀 讓眼睛休息 20 秒吧！', '視線移開螢幕，看看 6 公尺外的遠方並眨眨眼。');
-                        triggerEyeRestOverlay(true);
-                    }
-                }, 1000);
+                btn.textContent = "繼續護眼計時";
+                btn.className = "w-full py-2.5 bg-morandi-accent text-white font-medium rounded-xl hover:bg-opacity-90 transition shadow-sm text-sm";
+                timerWorker.postMessage({ action: 'stop', type: 'eye' });
             }
         }
 
-        function resetEyeTimer() {
-            clearInterval(eyeTimerId);
-            eyeTimerRunning = false;
-            eyeSecondsLeft = appState.eyeIntervalMin * 60;
-            updateEyeTimerDisplay();
-            const btn = document.getElementById('btn-eye-toggle');
-            btn.textContent = '開始護眼計時';
-            btn.className = 'flex-1 py-3 px-4 rounded-xl bg-morandi-blue hover:bg-morandi-blueDark text-white font-semibold text-sm transition-colors shadow-sm cursor-pointer';
+        function updateEyeDisplay() {
+            const mins = Math.floor(eyeRemaining / 60);
+            const secs = eyeRemaining % 60;
+            document.getElementById('eye-timer-display').textContent = `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+            const total = parseFloat(document.getElementById('eye-interval').value) * 60;
+            const percent = Math.max(0, Math.min(100, (eyeRemaining / total) * 100));
+            document.getElementById('eye-progress').style.width = percent + '%';
         }
 
-        // 開啟 20 秒護眼休息全螢幕引導
-        let autoResumeEyeAfterOverlay = false;
+        function incrementEyeCount() {
+            appData.eyeCount++;
+            saveData();
+            updateEyeCountUI();
+        }
 
-        function triggerEyeRestOverlay(autoResume = false) {
-            autoResumeEyeAfterOverlay = autoResume;
-            // 若主計時器正在跑，先暫停
-            if (eyeTimerRunning) {
-                clearInterval(eyeTimerId);
-                eyeTimerRunning = false;
-            }
+        function updateEyeCountUI() {
+            document.getElementById('eye-count-badge').textContent = `今日已護眼 ${appData.eyeCount} 次`;
+        }
 
-            const overlay = document.getElementById('eye-rest-overlay');
-            overlay.classList.remove('hidden');
-            overlay.classList.add('flex');
-
-            overlaySecondsLeft = 20;
-            document.getElementById('overlay-seconds').textContent = overlaySecondsLeft;
-
-            clearInterval(overlayTimerId);
-            overlayTimerId = setInterval(() => {
-                overlaySecondsLeft--;
-                document.getElementById('overlay-seconds').textContent = overlaySecondsLeft;
-                if (overlaySecondsLeft <= 0) {
-                    clearInterval(overlayTimerId);
-                    playChime('water'); // 休息結束輕響一聲
-                    completeEyeRest(autoResumeEyeAfterOverlay);
+        // -------------------------------------------------------------
+        // 20秒護眼休息遮罩
+        // -------------------------------------------------------------
+        function triggerRestModal() {
+            document.getElementById('rest-modal').classList.remove('hidden');
+            let restSecs = 20;
+            document.getElementById('rest-countdown').textContent = restSecs;
+            if (restInterval) clearInterval(restInterval);
+            restInterval = setInterval(() => {
+                restSecs--;
+                document.getElementById('rest-countdown').textContent = restSecs;
+                if (restSecs <= 0) {
+                    clearInterval(restInterval);
+                    closeRestModal();
                 }
             }, 1000);
         }
 
-        function completeEyeRest(shouldResume = false) {
-            clearInterval(overlayTimerId);
-            closeEyeRestOverlay(false);
-
-            // 增加今日護眼完成次數
-            if (appState.date !== getTodayDateString()) loadState();
-            appState.eyeRestCount += 1;
-            saveState();
-            updateEyeUI();
-
-            // 重置護眼計時器
-            eyeSecondsLeft = appState.eyeIntervalMin * 60;
-            updateEyeTimerDisplay();
-            showToast('🌿 完成一次 20 秒護眼休息！眼睛感謝您～');
-
-            if (shouldResume) {
-                toggleEyeTimer();
-            } else {
-                const btn = document.getElementById('btn-eye-toggle');
-                btn.textContent = '開始護眼計時';
-                btn.className = 'flex-1 py-3 px-4 rounded-xl bg-morandi-blue hover:bg-morandi-blueDark text-white font-semibold text-sm transition-colors shadow-sm cursor-pointer';
-            }
-        }
-
-        function closeEyeRestOverlay(resetTimer = true) {
-            clearInterval(overlayTimerId);
-            const overlay = document.getElementById('eye-rest-overlay');
-            overlay.classList.add('hidden');
-            overlay.classList.remove('flex');
-
-            if (resetTimer) {
-                resetEyeTimer();
-            }
-        }
-
-        // ================= 6. 輔助工具函數 =================
-        let toastTimeout = null;
-        function showToast(msg) {
-            const bar = document.getElementById('toast-bar');
-            bar.textContent = msg;
-            clearTimeout(toastTimeout);
-            toastTimeout = setTimeout(() => {
-                bar.textContent = '✨ 數據會自動儲存於瀏覽器，每日午夜自動歸零重新計算。';
-            }, 5000);
-        }
-
-        function manualResetToday() {
-            // 不使用 alert/confirm，採用兩段式點擊確認避免誤觸
-            const btn = event.target;
-            if (btn.dataset.confirm !== 'true') {
-                btn.dataset.confirm = 'true';
-                btn.textContent = '確定要歸零今日喝水與護眼次數嗎？（再點一次確認）';
-                btn.classList.add('text-morandi-accent', 'font-bold');
-                setTimeout(() => {
-                    btn.dataset.confirm = 'false';
-                    btn.textContent = '手動重置今日數據';
-                    btn.classList.remove('text-morandi-accent', 'font-bold');
-                }, 4000);
-                return;
-            }
-
-            appState.waterCurrent = 0;
-            appState.waterHistory = [];
-            appState.eyeRestCount = 0;
-            saveState();
-            updateWaterUI();
-            updateEyeUI();
-            btn.dataset.confirm = 'false';
-            btn.textContent = '手動重置今日數據';
-            btn.classList.remove('text-morandi-accent', 'font-bold');
-            showToast('🔄 今日飲水與護眼紀錄已手動歸零。');
-        }
-
-        // 網頁載入完成時初始化
-        window.addEventListener('DOMContentLoaded', loadState);
-    </script>
-</body>
-</html>
+        function closeRestModal() {
+            document.
